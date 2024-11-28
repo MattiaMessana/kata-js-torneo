@@ -201,4 +201,80 @@ console.log('%c/////////////////////////', 'color: pink; font-size: 34px'  );
     console.log('%c/////////////////////////', 'color: pink; font-size: 34px'  );
     
 
-     
+/*
+    Milestone 3 - Qualificazione:
+    escludiamo dal torneo chi, dopo l'allenamento non è riuscito a raggiungere una potenza di almeno 2000.
+*/
+
+// filtriamo l'array per i combattenti qualificati power >= 2000
+const qualifiedFighters = updatedFighters.filter(fighter => fighter.power >= 2000);
+
+
+console.log('%cQualification phase: Fighters who didn\'t reach the required power have been excluded.', 'color: cornflowerblue; font-size: 16px; font-weight: bold;');
+
+// Mostriamo i combattenti qualificati
+console.log('⚔️ %cQualified Fighters ⚔️', 'color: orange; font-size: 14px; font-weight: bold;');
+console.table(qualifiedFighters); 
+
+// Mostriamo i combattenti esclusi
+const excludedFighters = updatedFighters.filter(fighter => fighter.power < 2000);
+console.log('❌ %cExcluded Fighters ❌', 'color: red; font-size: 14px; font-weight: bold;');
+console.table(excludedFighters);
+
+// Aggiorniamo l'array dei combattenti per la fase successiva
+// Il nuovo array dei combattenti qualificati
+console.log('🏆 %cTournament continues with the following fighters 🏆', 'color: green; font-size: 16px; font-weight: bold;');
+console.table(qualifiedFighters);
+console.log('%c/////////////////////////', 'color: pink; font-size: 34px'  );
+
+
+/*
+    Milestone 4 - Combattimento:
+    i combattimenti si svolgeranno tra un partecipante e il successivo dell'elenco, 
+    assicurandosi che ognuno combatta una sola volta. 
+
+    In ogni scontro vincerà il combattente con la potenza più alta. 
+    In caso di parità vincerà chi "gioca in casa", ossia chi viene prima nell'elenco.
+*/
+
+
+// Aggiungiamo un combattente "Robot" se il numero di combattenti è dispari
+if (qualifiedFighters.length % 2 !== 0) {
+    console.log('🤖 %cOdd number of fighters, adding Robot with power 4000 🤖', 'color: lime; font-size: 14px;');
+    qualifiedFighters.push({ name: 'Robot', power: 4000 });
+  }
+  
+  // Fase di combattimento
+  const battles = [];
+  for (let i = 0; i < qualifiedFighters.length; i += 2) {
+    const fighter1 = qualifiedFighters[i];
+    const fighter2 = qualifiedFighters[i + 1];
+    
+    // Determina il vincitore
+    let winner = '';
+    if (fighter1.power > fighter2.power) {
+      winner = fighter1;
+    } else if (fighter1.power < fighter2.power) {
+      winner = fighter2;
+    } else {
+      // In caso di parità, vince chi è "in casa" (viene prima nell'elenco)
+      winner = fighter1;
+    }
+  
+    battles.push({
+      fighter1: fighter1.name,
+      fighter2: fighter2.name,
+      winner: winner.name,
+      winnerPower: winner.power
+    });
+  }
+  
+  // Stampa in console i risultati dei combattimenti
+  console.log('%cCombat Phase: Results of the battles.', 'color: orange; font-size: 16px; font-weight: bold;');
+  battles.forEach(battle => {
+    console.log(`⚔️ ${battle.fighter1} vs ${battle.fighter2} -> 🏆 Winner: ${battle.winner} (Power: ${battle.winnerPower})`);
+  });
+  console.log('%c/////////////////////////', 'color: pink; font-size: 34px'  );
+
+  
+  
