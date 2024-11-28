@@ -145,7 +145,7 @@ function assignWeapons(fighters, weapons) {
     return fighters.map(fighter => {
         // Seleziona casualmente un'arma
         const randomIndex = Math.floor(Math.random() * weapons.length);
-        const selectedWeapon = weapons.splice(randomIndex, 1)[0]; // Rimuove l'arma scelta
+        const selectedWeapon = weapons.splice(randomIndex, 1)[0]; // [0] serve per eccedere al primo elemento creato da splice quindi per accedere direttamente al oggetto in questo caso 
 
          // Stampa in console
             console.log(`⚔️ %c${fighter.name} is choosing their weapon...`, 'color: lightgreen; font-weight: bold;');
@@ -167,3 +167,38 @@ const fightersWithWeapons = assignWeapons(fighters, weapons);
 
 // Stampa il risultato
 console.log('%cAll fighters %care equipped!', 'color: cornflowerblue; font-size: 16px; font-weight: bold', 'color: red; font-size: 16px; font-weight: bold');
+console.log('%c/////////////////////////', 'color: pink; font-size: 34px'  );
+
+
+/*
+    Milestone 2 - Allenamento:
+    ogni combattente si sottoporrà ad un allenamento 
+    che incrementerà (o forse no) la sua potenza, moltiplicandola per un numero casuale tra 1 e 100.
+ */
+
+
+    const updatedFighters = fighters.map(fighter => {
+        // Genera un numero casuale tra 1 e 100
+        const trainingMultiplier = Math.floor(Math.random() * 100) + 1;
+    
+        // Calcola la nuova potenza
+        const newPower = fighter.power * trainingMultiplier;
+    
+        // Stampa i risultati
+        console.log(`💪 %c${fighter.name} is training...`, 'color: lightgreen; font-weight: bold;');
+        console.log(`🔥 %cTraining multiplier: ${trainingMultiplier}`, 'color: cornflowerblue; font-size: 14px;');
+        console.log(`🔋 %cNew power: ${newPower}`, 'color: red; font-size: 16px; font-weight: bold;');
+        console.log('----------------');
+        
+        // Restituisce il combattente con la nuova potenza
+        return {
+            ...fighter,
+            power: newPower,
+        };
+    });
+    
+    console.log('%cAll fighters have completed their training!', 'color: orange; font-size: 16px; font-weight: bold');
+    console.log('%c/////////////////////////', 'color: pink; font-size: 34px'  );
+    
+
+     
