@@ -237,44 +237,77 @@ console.log('%c/////////////////////////', 'color: pink; font-size: 34px'  );
     In caso di parità vincerà chi "gioca in casa", ossia chi viene prima nell'elenco.
 */
 
-
-// Aggiungiamo un combattente "Robot" se il numero di combattenti è dispari
-if (qualifiedFighters.length % 2 !== 0) {
-    console.log('🤖 %cOdd number of fighters, adding Robot with power 4000 🤖', 'color: lime; font-size: 14px;');
-    qualifiedFighters.push({ name: 'Robot', power: 4000 });
-  }
-  
-  // Fase di combattimento
-  const battles = [];
-  for (let i = 0; i < qualifiedFighters.length; i += 2) {
-    const fighter1 = qualifiedFighters[i];
-    const fighter2 = qualifiedFighters[i + 1];
+function combatPhase(fighters) {
+    const winners = [];
     
-    // Determina il vincitore
-    let winner = '';
-    if (fighter1.power > fighter2.power) {
-      winner = fighter1;
-    } else if (fighter1.power < fighter2.power) {
-      winner = fighter2;
-    } else {
-      // In caso di parità, vince chi è "in casa" (viene prima nell'elenco)
-      winner = fighter1;
+    // Se il numero è dispari, aggiungiamo il "Robot"
+    if (fighters.length % 2 !== 0) {
+        fighters.push({ name: 'Robot', power: 4000 });
+        console.log('🤖 %cRobot aggiunto per completare il numero dei combattenti! 🤖', 'color: lightblue;');
     }
-  
-    battles.push({
-      fighter1: fighter1.name,
-      fighter2: fighter2.name,
-      winner: winner.name,
-      winnerPower: winner.power
-    });
-  }
-  
-  // Stampa in console i risultati dei combattimenti
-  console.log('%cCombat Phase: Results of the battles.', 'color: orange; font-size: 16px; font-weight: bold;');
-  battles.forEach(battle => {
-    console.log(`⚔️ ${battle.fighter1} vs ${battle.fighter2} -> 🏆 Winner: ${battle.winner} (Power: ${battle.winnerPower})`);
-  });
-  console.log('%c/////////////////////////', 'color: pink; font-size: 34px'  );
 
-  
+    // Simulazione degli scontri
+    for (let i = 0; i < fighters.length; i += 2) {
+        const fighter1 = fighters[i];
+        const fighter2 = fighters[i + 1];
+        
+        console.log(`⚔️ %cScontro: %c${fighter1.name} (🔋 ${fighter1.power}) VS ${fighter2.name} (🔋 ${fighter2.power})`, 
+            'color: orange;', 'color: lightgreen;');
+
+        // Determinare il vincitore
+        const winner = fighter1.power >= fighter2.power ? fighter1 : fighter2;
+        winners.push(winner);
+
+        console.log(`🏆 %cVincitore: %c${winner.name} (🔋 ${winner.power})`, 'color: gold;', 'color: lightblue;');
+    }
+
+    console.log('%cVincitori degli scontri:', 'color: red; font-weight: bold;');
+    console.table(winners);
+    console.log('%c/////////////////////////', 'color: pink; font-size: 34px'  );
+
+    return winners;
+}
+
+/*
+    Milestone 5 - Premiazione:
+    tra tutti i vincitori degli scontri,
+    saliranno sul podio i 3 combattenti con la potenza più alta, in ordine decrescente.
+*/
+
+
+function awardCeremony(winners) {
+    // 1. Ordinare i vincitori in ordine decrescente di potenza
+    const sortedWinners = [...winners].sort((a, b) => b.power - a.power);
+
+    // 2. Selezionare i primi 3 combattenti per il podio
+    const podium = sortedWinners.slice(0, 3);
+
+    // 3. Stampare i risultati in console
+    console.log('%c🏆 Premiazione 🏆', 'color: gold; font-weight: bold; font-size: 16px;');
+    console.log('%cEcco il podio:', 'color: lightgreen; font-weight: bold; font-size: 14px;');
+    
+    podium.forEach((fighter, index) => {
+        console.log(
+            `%c${index + 1}° posto: %c${fighter.name} 🔋 Potenza: ${fighter.power}`,
+            `color: gold; font-weight: bold;`,
+            'color: lightblue; font-size: 14px;'
+        );
+    });
+
+    // Stampare i combattenti fuori dal podio
+    const outOfPodium = sortedWinners.slice(3);
+    if (outOfPodium.length > 0) {
+        console.log('%cCombattenti fuori dal podio:', 'color: red; font-weight: bold;');
+        console.table(outOfPodium);
+    } else {
+        console.log('%cNessun combattente fuori dal podio!', 'color: gray; font-style: italic;');
+    }
+}
+
+// Eseguire la fase di combattimento
+const winners = combatPhase(qualifiedFighters);
+
+// Passare i vincitori alla cerimonia di premiazione
+awardCeremony(winners);
+
   
